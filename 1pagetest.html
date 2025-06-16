@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>중대 맛집 추천</title>
+  <link rel="stylesheet" href="style.css" />
+  <!--js 불러오기 -->
+  <script defer src="js/list.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+    #sidebar {
+      width: 300px;
+      padding: 10px;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+    }
+    #main {
+      width: 400px;
+      padding: 10px;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+    }
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+
+    /* 리스트용 스타일 */
+    .restaurant-item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .restaurant-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+
+    .restaurant-info {
+      flex: 1;
+    }
+
+    .restaurant-meta {
+      display: flex;
+      gap: 10px;
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    .add-button {
+      padding: 5px 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+
+    #rolette-candidates{display:none;}
+     .pin {
+      width: 0; height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 20px solid rgb(54, 120, 212);
+      position: absolute;
+      top: 150px;
+      left: 100%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    #roulette-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 사이드바 -->
+    <div id="sidebar">
+      <!-- 로고 -->
+      <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjEyMjBfMjQ2%2FMDAxNjcxNTEyNTkzODE2.BYK8wv3ykLKTM2dvLSKIAIGLJjBmrT-xgKt2jlBB8gwg.CRsAKB71sQk8hAJV3Aqd7346hBVyplMagT786IC4jBAg.PNG.danziger%2FCAU_symbol.png&type=a340" alt="CAU" style="height: 50px; margin-bottom: 15px;">
+
+
+      <!-- 검색창 -->
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="장소명을 입력하세요" />
+      <button id="search-button" type="button">🔍</button>
+      </div>
+
+
+
+      <!-- 필터 영역 (가로로 정렬) -->
+      <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start;">
+
+      <!-- 카테고리 필터 → 커스텀 체크박스 추천 -->
+      <div class="dropdown" id="category-dropdown" style="margin-bottom: 10px; position: relative;">
+        <button type="button" class="dropdown-toggle">카테고리 선택 ▼</button>
+        <div class="dropdown-menu" style="display:none; position: absolute; background: white; border: 1px solid #ccc; padding: 10px; z-index: 100;">
+          <label><input type="checkbox" value="한식"> 한식</label><br>
+          <label><input type="checkbox" value="분식"> 분식</label><br>
+          <label><input type="checkbox" value="양식"> 양식</label><br>
+          <label><input type="checkbox" value="일식"> 일식</label><br>
+          <label><input type="checkbox" value="중식"> 중식</label><br>
+          <label><input type="checkbox" value="멕시칸"> 멕시칸</label><br>
+          <label><input type="checkbox" value="아시안"> 아시안</label><br>
+          <label><input type="checkbox" value="카페/베이커리"> 카페/베이커리</label>
+        </div>
+      </div>
+      
+
+      <!-- 위치 필터 → 커스텀 체크박스 추천 -->
+      <div class="dropdown" id="area-dropdown" style="margin-bottom: 10px; position: relative;">
+        <button type="button" class="dropdown-toggle">위치 선택 ▼</button>
+        <div class="dropdown-menu" style="display:none; position: absolute; background: white; border: 1px solid #ccc; padding: 10px; z-index: 100;">
+          <label><input type="checkbox" value="정문"> 정문</label><br>
+          <label><input type="checkbox" value="중문"> 중문</label><br>
+          <label><input type="checkbox" value="후문"> 후문</label><br>
+          <label><input type="checkbox" value="흑석역"> 흑석역</label><br>
+          <label><input type="checkbox" value="상도역"> 상도역</label><br>
+          <label><input type="checkbox" value="흑석시장"> 흑석시장</label>
+        </div>
+      </div>
+    </div>
+
+      <!-- 선택된 필터 표시 영역 (태그 표시용) -->
+      <div id="selected-filters"></div>
+      
+      <!-- 찜한 식당만 보기 버튼 -->
+    <div style="margin-top: 10px;">
+      <button id="show-favorites" style="width: 100%; padding: 8px;">❤️ 찜한 식당만 보기</button>
+</div>
+
+      <!-- 별점순 정렬 버튼 -->
+    <div style="margin-top: 10px;">
+      <button id="sort-by-rating" style="width: 100%; padding: 8px;">⭐ 별점 높은 순</button>
+</div>
+
+      <!-- 음식점 리스트 -->
+      <ol id="restaurant-list">
+      </ol>
+      </div>
+    
+    
+    
+
+    <!-- 중앙 메인 영역 -->
+    <div id="main">
+      <!-- 먹고 싶은 것 리스트 -->
+      <h3>먹고 싶은 것</h3>
+      <ol id="selected-list"></ol>
+
+     <h3>먹을 것</h3>
+
+<!-- 룰렛 영역 감싸기 -->
+<div style="position: relative; width: 300px; height: 300px; margin: 0 auto;">
+
+  <!-- 🔺 고정된 화살표 (아래 뾰족) -->
+  <div style="
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 25px solid black;
+
+    z-index: 10;
+  "></div>
+
+  <!-- 🎡 회전하는 룰렛 canvas -->
+  <canvas id="roulette-canvas"
+          width="300"
+          height="300"
+          style="display: block; border-radius: 50%;">
+  </canvas>
+</div>
+
+<!-- 결과 표시 -->
+<div id="roulette-result" style="text-align:center; font-size: 1.5em; margin-top: 10px;">결과</div>
+
+<!-- 버튼 -->
+<div style="text-align: center; margin-top: 10px;">
+  <button id="spin-button">스핀</button>
+  <button id="navigate-button" style="display: none;">길찾기</button>
+</div>
+
+</div> <!-- ✅ #main을 여기서 닫고 -->
+
+<!-- ✅ 지도는 container 바로 안에 배치 -->
+<div id="map"><iframe src="restaurant_map.html" width="100%" height="100%" frameborder="0"></iframe></div>

@@ -1,0 +1,174 @@
+/* 전체 폰트 및 배경 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  background-color: #ffffff;
+  color: #333;
+  margin: 0;
+}
+
+/* 검색창 영역 */
+#search-container {
+  margin-bottom: 12px;
+  position: relative;
+}
+
+#search-input {
+  padding: 8px 35px 8px 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#search-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #999;
+}
+
+/* 드롭다운 버튼 */
+.dropdown-toggle {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-top: 1px;
+}
+
+.dropdown-toggle:hover {
+  background-color: #004c99;
+}
+
+/* 드롭다운 메뉴 */
+.dropdown-menu {
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* 선택된 필터 표시 */
+#selected-filters {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 버튼 공통 스타일 */
+button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+button:hover {
+  background-color: #004c99;
+}
+
+/* 음식점 리스트 아이템 */
+.restaurant-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 8px 5px;
+}
+
+/* 음식점 이미지 */
+.restaurant-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+/* 음식점 정보 텍스트 */
+.restaurant-info h4 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.restaurant-meta {
+  font-size: 11px;
+  color: #888;
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* 하트 및 별점 스타일 */
+.restaurant-meta .heart {
+  color: #ff6688;
+}
+
+.restaurant-meta .star {
+  color: gold;
+}
+
+/* 찜 버튼 */
+.add-button {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  font-size: 17px;
+  padding: 4px 8px;
+}
+
+/* 먹고 싶은 것 리스트 */
+#selected-list li {
+  padding: 7px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 룰렛 */
+#roulette {
+  border: 3px solid #444;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-weight: bold;
+}
+
+#roulette-result {
+  font-size: 17px;
+  color: #0066cc;
+}
+
+/* 스핀/길찾기 버튼 */
+#spin-button,
+#navigate-button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin: 10px 5px 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#spin-button:hover,
+#navigate-button:hover {
+  background-color: #004c99;
+}
+
+/* 음식점 리스트 왼쪽 정렬 */
+#restaurant-list {
+  padding-left: 0;
+  margin-left: -5px;
+}
