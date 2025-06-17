@@ -1,13 +1,35 @@
-/* 전체 폰트 및 배경 */
+/* 기본 설정 */
 body {
-  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  font-family: 'Noto Sans KR', Arial, sans-serif;
   font-size: 13px;
   background-color: #ffffff;
   color: #333;
-  margin: 0;
 }
 
-/* 검색창 영역 */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* 영역 구분 */
+#sidebar, #main {
+  width: 300px;
+  padding: 10px;
+  border-right: 1px solid #ffffff;
+  overflow-y: auto;
+}
+
+#main {
+  width: 400px;
+}
+
+#map {
+  flex: 1;
+  height: 100%;
+}
+
+/* 검색창 */
 #search-container {
   margin-bottom: 12px;
   position: relative;
@@ -24,17 +46,27 @@ body {
 
 #search-button {
   position: absolute;
-  right: 10px;
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: none;
   font-size: 16px;
   cursor: pointer;
-  color: #999;
+  color: #000000aa;
 }
 
-/* 드롭다운 버튼 */
+/* 필터 드롭다운 */
+.filter-section {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.dropdown {
+  position: relative;
+}
+
 .dropdown-toggle {
   background-color: #0066cc;
   color: white;
@@ -43,20 +75,24 @@ body {
   border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
-  margin-top: 1px;
 }
 
 .dropdown-toggle:hover {
   background-color: #004c99;
 }
 
-/* 드롭다운 메뉴 */
 .dropdown-menu {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #ffffff;
+  padding: 10px;
   border-radius: 8px;
+  z-index: 100;
   font-size: 12px;
 }
 
-/* 선택된 필터 표시 */
+/* 선택된 필터 태그 */
 #selected-filters {
   margin-top: 10px;
   display: flex;
@@ -64,30 +100,29 @@ body {
   gap: 6px;
 }
 
-/* 버튼 공통 스타일 */
-button {
-  background-color: #0066cc;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 13px;
+/* 사이드바 버튼 */
+.sidebar-actions {
+  margin-top: 10px;
 }
 
-button:hover {
-  background-color: #004c99;
+.sidebar-actions button {
+  width: 100%;
+  margin-top: 5px;
 }
 
-/* 음식점 리스트 아이템 */
+/* 음식점 리스트 */
+#restaurant-list {
+  padding-left: 0;
+  margin-left: -5px;
+}
+
 .restaurant-item {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ccc;
   padding: 8px 5px;
 }
 
-/* 음식점 이미지 */
 .restaurant-img {
   width: 60px;
   height: 60px;
@@ -96,7 +131,6 @@ button:hover {
   margin-right: 10px;
 }
 
-/* 음식점 정보 텍스트 */
 .restaurant-info h4 {
   font-size: 14px;
   margin: 0;
@@ -110,7 +144,6 @@ button:hover {
   margin-top: 4px;
 }
 
-/* 하트 및 별점 스타일 */
 .restaurant-meta .heart {
   color: #ff6688;
 }
@@ -119,42 +152,88 @@ button:hover {
   color: gold;
 }
 
-/* 찜 버튼 */
+/* + 버튼 */
 .add-button {
-  background-color: #f0f0f0;
+  background-color: #ccc;
   border-radius: 10px;
   font-size: 17px;
   padding: 4px 8px;
 }
 
+/* + 버튼 오른쪽 정렬 */
+.restaurant-item {
+  position: relative;
+  padding-right: 40px; 
+}
+
+.add-button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.restaurant-info {
+  min-width: 0;
+  margin-right: 45px;
+}
+
+
+
 /* 먹고 싶은 것 리스트 */
 #selected-list li {
   padding: 7px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ccccccc2;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* 룰렛 */
-#roulette {
-  border: 3px solid #444;
-  border-radius: 50%;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  font-weight: bold;
+/* 룰렛 영역 */
+.roulette-wrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
 }
 
+.pin {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 25px solid black;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+#roulette-canvas {
+  display: block;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background-color: #ffffff;
+}
+
+/* 결과 텍스트 */
 #roulette-result {
+  text-align: center;
   font-size: 17px;
   color: #0066cc;
+  margin-top: 10px;
 }
 
-/* 스핀/길찾기 버튼 */
+/* 스핀 / 길찾기 버튼 */
+.roulette-buttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
 #spin-button,
 #navigate-button {
   background-color: #0066cc;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
   padding: 8px 12px;
   margin: 10px 5px 0;
@@ -167,10 +246,17 @@ button:hover {
   background-color: #004c99;
 }
 
-/* 음식점 리스트 왼쪽 정렬 */
-#restaurant-list {
-  padding-left: 0;
-  margin-left: -5px;
+/* 공통(찜, 별점, x, 스핀, 길찾기) 버튼 스타일 */
+button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
 }
 
-
+button:hover {
+  background-color: #004c99;
+}

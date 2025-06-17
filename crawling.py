@@ -3,8 +3,8 @@ import csv
 import json
 import time
 
-# [당신의 Kakao REST API 키를 여기에 입력하세요]
-KAKAO_API_KEY = "KakaoAK 2916fc05820ef95c488c58c62b896219"  # 반드시 KakaoAK 포함
+# Kakao REST API 키 입력
+KAKAO_API_KEY = "KakaoAK 2916fc05820ef95c488c58c62b896219"  
 
 SEARCH_URL = "https://dapi.kakao.com/v2/local/search/keyword.json"
 HEADERS = {"Authorization": KAKAO_API_KEY}
@@ -19,7 +19,7 @@ with open(INPUT_CSV_PATH, newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         name = row["상호명"]
-        query = f"{name} 동작구"  # <- 위치 기반 키워드 (흑석동 또는 동작구 추천)
+        query = f"{name} 동작구"  # 검색을 위해 위치 기반 키워드 추가
         params = {"query": query}
 
         print(f"🔍 검색 중: {query}")
@@ -46,7 +46,7 @@ with open(INPUT_CSV_PATH, newline='', encoding='utf-8') as csvfile:
         except Exception as e:
             print(f"❌ {name} → 오류 발생: {e}")
         
-        time.sleep(0.2)  # 카카오 API 요청 간 딜레이 (Rate Limit 방지)
+        time.sleep(0.2)  
 
 # JSON 저장
 with open(OUTPUT_JSON_PATH, 'w', encoding='utf-8') as jf:

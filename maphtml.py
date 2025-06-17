@@ -10,7 +10,7 @@ df = pd.read_csv(csv_file_path)
 # 위도(x), 경도(y)가 있는 행만 필터링
 df = df.dropna(subset=['x', 'y'])
 
-# folium은 위도(y), 경도(x) 순서 주의!
+
 center_lat = df['y'].astype(float).mean()
 center_lng = df['x'].astype(float).mean()
 m = folium.Map(location=[center_lat, center_lng], zoom_start=16)
