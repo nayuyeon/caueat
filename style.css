@@ -173,8 +173,4 @@ button:hover {
   margin-left: -5px;
 }
 
-/*문의처*/
-footer {
-  clear: both;  /* float 해제 */
-  display: block;
-}
+
